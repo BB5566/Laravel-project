@@ -167,3 +167,266 @@ git push origin main
 *   **前端資產：** 如果專案包含前端資產（如 CSS/JS），您可能需要運行 `npm install` 或 `yarn install`，然後運行 `npm run dev` 或 `npm run build` 來編譯它們。
 
 ---
+
+## 學習筆記 (2025-09-10)
+
+這份筆記記錄了使用 Laravel 12 建立一個基本 CRUD 專案的過程，涵蓋了從安裝、環境設定、路由、控制器到視圖的完整流程。
+
+### 1. 安裝與初始化
+
+#### 1.1 建立專案
+使用 Composer 來建立一個新的 Laravel 專案。
+```bash
+# 建立一個名為 laravel0910 的 Laravel 12 專案
+composer create-project "laravel/laravel:^12.0" laravel0910
+```
+指令執行後，會建立一個名為 `laravel0910` 的資料夾。
+
+#### 1.2 進入專案目錄並檢視 Artisan 指令
+進入專案目錄後，可以透過 `php artisan` 指令來查看所有可用的指令。
+```bash
+# 進入專案目錄
+cd laravel0910/
+
+# 列出所有 artisan 指令
+php artisan
+```
+> 筆記中顯示安裝的版本為 **Laravel Framework 12.28.1**。
+
+### 2. 本地開發環境設定 (XAMPP)
+
+為了讓本地的網址更簡潔 (例如：`http://localhost/` 而不是 `http://localhost/laravel0910/public/`)，需要修改 XAMPP 的 Apache 設定。
+
+#### 2.1 修改 Apache (`httpd.conf`)
+1.  開啟 XAMPP 控制台。
+2.  點擊 Apache 模組旁的 **Config** 按鈕。
+3.  選擇 **Apache (httpd.conf)**。
+4.  找到 `DocumentRoot` 和 `<Directory>` 的設定。
+5.  將路徑指向您 Laravel 專案中的 `public` 資料夾。
+
+```apache
+# 註解掉原始設定
+# DocumentRoot "C:/xampp/htdocs"
+# <Directory "C:/xampp/htdocs">
+
+# 新增指向 Laravel 專案 public 資料夾的設定
+DocumentRoot "C:/xampp/htdocs/laravel0910/public"
+<Directory "C:/xampp/htdocs/laravel0910/public">
+```
+完成修改後，重新啟動 (Stop/Start) Apache 服務。
+
+### 3. MVC 核心概念 - Resource Controller
+
+Laravel 的 Resource Controller 可以讓我們用一行指令就建立出處理 CRUD (Create, Read, Update, Delete) 所需的所有方法。
+
+#### 3.1 建立 Resource Controller
+使用 `--resource` 參數來建立一個 Resource Controller。
+```bash
+# 建立一個名為 StudentController 的 Resource Controller
+php artisan make:controller StudentController --resource
+```
+這個指令會在 `app/Http/Controllers/` 目錄下建立 `StudentController.php` 檔案。
+
+#### 3.2 建立路由 (Route)
+接著，需要在 `routes/web.php` 中註冊這個 Controller。
+```php
+// routes/web.php
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController; // 記得要 use
+
+// 這單行程式碼會自動建立對應到 Controller 中所有資源方法的多個路由
+// 資源名稱建議使用複數 (students)
+Route::resource('students', StudentController::class);
+```
+
+#### 3.3 Resource Route 對應表
+`Route::resource()` 會建立以下 RESTful 風格的路由：
+
+| Verb      | URI                    | Action  | Route Name          |
+| :-------- | :--------------------- | :------ | :------------------ |
+| GET       | `/students`            | index   | `students.index`    |
+| GET       | `/students/create`     | create  | `students.create`   |
+| POST      | `/students`            | store   | `students.store`    |
+| GET       | `/students/{student}`  | show    | `students.show`     |
+| GET       | `/students/{student}/edit` | edit    | `students.edit`     |
+| PUT/PATCH | `/students/{student}`  | update  | `students.update`   |
+| DELETE    | `/students/{student}`  | destroy | `students.destroy`  |
+
+### 4. 視圖 (View) 與資料傳遞
+
+#### 4.1 建立 Blade 視圖檔案
+1.  在 `resources/views/` 資料夾下，建立一個名為 `student` 的子資料夾。
+2.  在 `student` 資料夾內，建立一個 `index.blade.php` 檔案。
+
+基本的 HTML 結構如下：
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+</head>
+<body>
+    <h1>Hello student index</h1>
+</body>
+</html>
+```
+
+#### 4.2 從 Controller 回傳 View
+修改 StudentController 中的 index 方法，使其回傳剛剛建立的視圖。
+```php
+// app/Http/Controllers/StudentController.php
+public function index()
+{
+    // 使用 '資料夾名稱.檔案名稱' 的格式
+    return view('student.index');
+}
+```
+現在，訪問 `http://localhost/students` 應該就能看到 "Hello student index" 的畫面了。
+
+#### 4.3 除錯技巧：`dd()`
+當路由或 Controller 沒有如預期般運作時，可以使用 `dd()` (Dump and Die) 函式來中斷程式執行並印出變數或訊息，非常適合用來除錯。
+```php
+// app/Http/Controllers/StudentController.php
+public function index()
+{
+    // 程式會在這裡停止，並在瀏覽器上顯示字串
+    dd('hello students index dd');
+}
+
+public function create()
+{
+    dd('hello students create');
+}
+```
+執行結果會在瀏覽器上顯示 `"hello students index dd"`。
+
+#### 4.4 Controller 傳遞資料到 View
+在 Controller 準備好資料陣列，並將其作為第二個參數傳遞給 `view()` 函式。
+```php
+// app/Http/Controllers/StudentController.php
+public function index()
+{
+    $data = [
+        [
+            'id' => 1,
+            'name' => 'amy',
+        ],
+        [
+            'id' => 2,
+            'name' => 'bob',
+        ],
+        [
+            'id' => 3,
+            'name' => 'cat',
+        ]
+    ];
+
+    // 將 $data 陣列傳遞到 view 中，view 裡面就可以使用名為 'data' 的變數
+    return view('student.index', ['data' => $data]);
+}
+```
+
+#### 4.5 在 Blade 模板中顯示資料
+使用 Blade 的 `@foreach` 語法來迭代陣列，並顯示資料。同時，使用 `route()` 輔助函式來產生編輯頁面的連結。
+```blade
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($data as $value)
+                <tr>
+                    <td>{{ $value['id'] }}</td>
+                    <td>{{ $value['name'] }}</td>
+                    <td>
+                        <a class="btn btn-warning" href="{{ route('students.edit', ['student' => $value['id']]) }}">edit</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</body>
+```
+
+### 5. Git 與專案協作
+
+#### 5.1 Clone 專案
+從 GitHub repository clone 專案到本地。
+```bash
+git clone https://github.com/chengkk0910/laravel_20250910.git laravelAll
+```
+
+#### 5.2 初始化 Cloned 專案
+從 Git clone 下來的專案缺少 `vendor` 目錄和 `.env` 環境檔，需要手動設定。
+
+1.  **安裝 PHP 套件**
+    ```bash
+    composer install
+    ```
+2.  **建立環境檔**
+    ```bash
+    cp .env.example .env
+    ```
+3.  **產生 APP_KEY**
+    ```bash
+    php artisan key:generate
+    ```
+4.  **設定資料庫**
+    手動編輯 `.env` 檔案，填寫正確的資料庫連線資訊 (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`)。
+    ```dotenv
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=laravel_0910
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
+5.  **執行資料庫遷移**
+    這個指令會根據 `database/migrations` 裡面的檔案，在資料庫中建立對應的資料表。
+    ```bash
+    php artisan migrate
+    ```
+composer install
+
+建立環境檔 
+
+Bash
+
+cp .env.example .env
+
+產生 APP_KEY 
+
+Bash
+
+php artisan key:generate
+
+設定資料庫 
+
+手動編輯 
+
+.env 檔案，填寫正確的資料庫連線資訊 (DB_DATABASE, DB_USERNAME, DB_PASSWORD)。 
+
+程式碼片段
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_0910
+DB_USERNAME=root
+DB_PASSWORD=
+執行資料庫遷移
+
+這個指令會根據 
+
+database/migrations 裡面的檔案，在資料庫中建立對應的資料表。 
+
+Bash
+
+php artisan migrate
