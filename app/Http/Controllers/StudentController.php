@@ -68,4 +68,14 @@ class StudentController extends Controller
         dd('students excel ok');
         // return view('student.excel');
     }
+
+        public function test()
+    {
+        $data = [
+            'name' => 'John Doe',
+            'age' => 25,
+            'email' => 'john@example.com',
+        ];
+        return view('student.test', ['data' => $data]);
+    }
 }
