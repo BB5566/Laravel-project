@@ -11,7 +11,10 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Student index</h1>
-        <div class="mb-3 text-end"><a href="{{ route('students.create') }}" class="btn btn-primary">Add Student</a></div>
+        <div class="mb-3 text-end">
+        <a href="{{ route('students.excel') }}" class="btn btn-primary">output excel</a>
+        <a href="{{ route('students.create') }}" class="btn btn-primary">Add Student</a>
+        </div>
         <table class="table table-striped table-hover table-bordered">
             <thead class="table-dark">
                 <tr>
