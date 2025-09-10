@@ -20,29 +20,17 @@
                 <tr>
                     <th>Name</th>
                     <th>Age</th>
-                    <th>Grade</th>
                     <th>edit</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>John</td>
-                    <td>20</td>
-                    <td>A</td>
-                    <td><a href="{{ route('students.edit', ['student' => 1]) }}" class="btn btn-warning btn-sm">Edit</a></td>
-                </tr>
-                <tr>
-                    <td>Jane</td>
-                    <td>21</td>
-                    <td>B</td>
-                    <td><a href="{{ route('students.edit', ['student' => 2]) }}" class="btn btn-warning btn-sm">Edit</a></td>
-                </tr>
-                <tr>
-                    <td>Smith</td>
-                    <td>22</td>
-                    <td>C</td>
-                    <td><a href="{{ route('students.edit', ['student' => 3]) }}" class="btn btn-warning btn-sm">Edit</a></td>
-                </tr>
+                @foreach ($data as $value)
+                    <tr>
+                        <td>{{ $value['name'] }}</td>
+                        <td>{{ $value['age'] }}</td>
+                        <td><a href="{{ route('students.edit', ['student' => $loop->index + 1]) }}" class="btn btn-warning btn-sm">Edit</a></td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

@@ -11,7 +11,39 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('student.index');
+        $data = [
+            [
+                'id' => 1,
+                'name' => 'John Doe',
+                'age' => 25,
+                'email' => 'john@example.com',
+            ],
+            [
+                'id' => 2,
+                'name' => 'Jane Smith',
+                'age' => 22,
+                'email' => 'jane@example.com',
+            ],
+            [
+                'id' => 3,
+                'name' => 'Alice Lee',
+                'age' => 24,
+                'email' => 'alice@example.com',
+            ],
+            [
+                'id' => 4,
+                'name' => 'Bob Chen',
+                'age' => 23,
+                'email' => 'bob@example.com',
+            ],
+            [
+                'id' => 5,
+                'name' => 'Charlie Wang',
+                'age' => 26,
+                'email' => 'charlie@example.com',
+            ],
+        ];
+        return view('student.index', ['data' => $data]);
     }
 
     /**
@@ -69,12 +101,34 @@ class StudentController extends Controller
         // return view('student.excel');
     }
 
-        public function test()
+    public function test()
     {
         $data = [
-            'name' => 'John Doe',
-            'age' => 25,
-            'email' => 'john@example.com',
+            [
+                'name' => 'John Doe',
+                'age' => 25,
+                'email' => 'john@example.com',
+            ],
+            [
+                'name' => 'Jane Smith',
+                'age' => 22,
+                'email' => 'jane@example.com',
+            ],
+            [
+                'name' => 'Alice Lee',
+                'age' => 24,
+                'email' => 'alice@example.com',
+            ],
+            [
+                'name' => 'Bob Chen',
+                'age' => 23,
+                'email' => 'bob@example.com',
+            ],
+            [
+                'name' => 'Charlie Wang',
+                'age' => 26,
+                'email' => 'charlie@example.com',
+            ],
         ];
         return view('student.test', ['data' => $data]);
     }
