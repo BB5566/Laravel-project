@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Page Title')
+@section('title', 'Child Title')
 
 @section('sidebar')
     @@parent
@@ -11,5 +11,12 @@
 @endsection
 
 @section('content')
+    <p>This is my body content.</p>
+    <p>This is my body content.</p>
+    <p>This is my body content.</p>
+    <p>This is my body content.</p>
+    <p>This is my body content.</p>
+    <p>This is my body content.</p>
+    <p>This is my body content.</p>
     <p>This is my body content.</p>
 @endsection

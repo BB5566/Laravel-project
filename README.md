@@ -1,5 +1,7 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
+<p align="center">一份簡潔的 Laravel 教學與上手範例，包含快速開始、常見問題與實作練習。</p>
+
 ---
 
 ## Laravel 專案建置與部署流程說明
@@ -10,18 +12,31 @@
 
 ## 目錄
 
-- [前置準備](#%E5%89%8D%E7%BD%AE%E6%BA%96%E5%82%99)
-- [本地新建 Laravel 專案](#1-%E6%9C%AC%E5%9C%B0%E6%96%B0%E5%BB%BA-laravel-%E5%B0%88%E6%A1%88)
-- [初始化 Git 倉庫並首次提交](#2-%E5%88%9D%E5%A7%8B%E5%8C%96-git-%E5%80%89%E5%BA%AB%E4%B8%A6%E9%A6%96%E6%AC%A1%E6%8F%90%E4%BA%A4)
-- [從 GitHub Clone 後的標準設定](#4-%E5%BE%9E-github-clone-%E5%BE%8C%E7%9A%84%E6%A8%99%E6%BA%96%E8%A8%AD%E5%AE%9A%E6%B5%81%E7%A8%8B)
-- [本地開發環境設定 (XAMPP)](#%E6%9C%AC%E5%9C%B0%E9%96%8B%E7%99%BC%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A-xampp)
-- [Laravel 核心 MVC 架構](#laravel-%E6%A0%B8%E5%BF%83-mvc-%E6%9E%B6%E6%A7%8B)
-- [實作教學：Resource Controller / Migration / Seeder / 表單](#%E5%AF%A6%E4%BD%9C%E6%95%99%E5%AD%B8resource-controller--migration--seeder--%E8%A1%A8%E5%96%AE)
-- [新手常見問題與重要觀念](#%E6%96%B0%E6%89%8B%E5%B8%B8%E8%A6%8B%E5%95%8F%E9%A1%8C%E8%88%87%E9%87%8D%E8%A6%81%E8%A7%80%E5%BF%B5)
-- [常用 Git 操作](#%E5%B8%B8%E7%94%A8-git-%E6%93%8D%E4%BD%9C)
-- [注意事項](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85)
+-   [前置準備](#preparation)
+-   [本地新建 Laravel 專案](#local-create)
+-   [初始化 Git 倉庫並首次提交](#git-init)
+-   [在 GitHub 建立遠端倉庫並連結](#github-remote)
+-   [從 GitHub Clone 後的標準設定流程](#after-clone)
+-   [本地開發環境設定 (XAMPP)](#xampp)
+-   [Laravel 核心 MVC 架構](#mvc)
+-   [實作教學：Resource Controller / Migration / Seeder / 表單](#resource-tutorial)
+-   [新手常見問題與重要觀念](#faq)
+-   [快速開始 (Quick Start)](#quick-start)
+-   [快速疑難排解 (Quick Troubleshoot)](#quick-troubleshoot)
+-   [速查卡（Quick Reference）](#quick-reference)
+-   [系統需求（建議）](#system-requirements)
+-   [測試（phpunit / SQLite）](#testing)
+-   [前端資產（Vite / npm）](#frontend)
+-   [.env 常用變數說明（快速）](#env)
+-   [部署（生產） Checklist](#deployment)
+-   [常用路徑索引](#paths)
+-   [Route::resource 小技巧與範例](#route-resource)
+-   [練習：建立學生 CRUD（Hands-on 練習）](#exercise-students)
+-   [注意事項](#notes)
 
 ---
+
+<a name="preparation"></a>
 
 ## 前置準備
 
@@ -41,6 +56,8 @@ DocumentRoot "C:/xampp/htdocs/your-project-name/public"
 
 ---
 
+<a name="local-create"></a>
+
 ## 1. 本地新建 Laravel 專案
 
 使用 Composer 建立一個新的 Laravel 專案：
@@ -51,6 +68,8 @@ cd your-project-name
 ```
 
 ---
+
+<a name="git-init"></a>
 
 ## 2. 初始化 Git 倉庫並首次提交
 
@@ -64,6 +83,8 @@ git commit -m "Initial commit - Laravel project setup"
 
 ---
 
+<a name="github-remote"></a>
+
 ## 3. 在 GitHub 建立遠端倉庫並連結
 
 1. 前往 GitHub 建立一個新的空倉庫。
@@ -75,6 +96,8 @@ git push -u origin main
 ```
 
 ---
+
+<a name="after-clone"></a>
 
 ## 4. 從 GitHub Clone 專案後的標準設定流程
 
@@ -133,6 +156,8 @@ php artisan serve
 
 ---
 
+<a name="xampp"></a>
+
 ## 本地開發環境設定 (XAMPP)
 
 為了讓本地的網址更簡潔 (例如：`http://localhost/` 而不是 `http://localhost/laravel0910/public/`)，需要修改 XAMPP 的 Apache 設定。
@@ -156,6 +181,8 @@ DocumentRoot "C:/xampp/htdocs/laravel0910/public"
 完成修改後，重新啟動 (Stop/Start) Apache 服務。
 
 ---
+
+<a name="mvc"></a>
 
 ## Laravel 核心 MVC 架構
 
@@ -182,6 +209,7 @@ Laravel 是一個基於 MVC（Model-View-Controller）設計模式的框架，�
 -   Controller 會把處理好的資料傳遞給 View，再由 View（通常使用 Blade 模板）將資料渲染出來。
 
 ### 資料流向
+
 1. 使用者發出請求 (URL) → Route
 2. Route → Controller
 3. Controller → Model (操作資料庫)
@@ -189,6 +217,8 @@ Laravel 是一個基於 MVC（Model-View-Controller）設計模式的框架，�
 5. View → 回傳 HTML 給使用者
 
 ---
+
+<a name="resource-tutorial"></a>
 
 ## 實作教學：Resource Controller / Migration / Seeder / 表單
 
@@ -215,15 +245,15 @@ Route::resource('students', StudentController::class);
 
 ### Resource Route 對照表
 
-| Verb | URI | Action | Route Name |
-| --- | --- | --- | --- |
-| GET | /students | index | students.index |
-| GET | /students/create | create | students.create |
-| POST | /students | store | students.store |
-| GET | /students/{student} | show | students.show |
-| GET | /students/{student}/edit | edit | students.edit |
-| PUT/PATCH | /students/{student} | update | students.update |
-| DELETE | /students/{student} | destroy | students.destroy |
+| Verb      | URI                      | Action  | Route Name       |
+| --------- | ------------------------ | ------- | ---------------- |
+| GET       | /students                | index   | students.index   |
+| GET       | /students/create         | create  | students.create  |
+| POST      | /students                | store   | students.store   |
+| GET       | /students/{student}      | show    | students.show    |
+| GET       | /students/{student}/edit | edit    | students.edit    |
+| PUT/PATCH | /students/{student}      | update  | students.update  |
+| DELETE    | /students/{student}      | destroy | students.destroy |
 
 ### B. Controller 範例（index）
 
@@ -370,7 +400,7 @@ public function store(Request $request)
 
 ### F. 平台指令差異提醒（mac/linux vs PowerShell/Windows）
 
-- 複製 `.env`：
+-   複製 `.env`：
 
 ```bash
 # mac / linux
@@ -383,9 +413,11 @@ Copy-Item .env.example .env
 copy .env.example .env
 ```
 
-- 其他 php / composer / artisan 指令在 PowerShell 下語法相同，僅檔案操作指令不同。
+-   其他 php / composer / artisan 指令在 PowerShell 下語法相同，僅檔案操作指令不同。
 
 ---
+
+<a name="faq"></a>
 
 ## 新手常見問題與重要觀念
 
@@ -482,6 +514,111 @@ foreach ($posts as $post) {
 
 ---
 
+<a name="quick-start"></a>
+
+## 快速開始 (Quick Start)
+
+最短可跑起來的 5 個步驟，適合想立刻啟動專案的人。
+
+1. Clone 專案
+
+```bash
+git clone https://github.com/你的GitHub帳號/你的倉庫名稱.git
+cd 你的倉庫名稱
+```
+
+2. 安裝相依（PHP 與 Node）
+
+```bash
+composer install
+# 如果有前端資產
+npm install
+```
+
+3. 複製環境檔並生成 APP_KEY
+
+```bash
+# mac / linux
+cp .env.example .env
+
+# PowerShell (Windows)
+Copy-Item .env.example .env
+
+# CMD
+copy .env.example .env
+
+php artisan key:generate
+```
+
+4. 執行資料庫遷移與種子（如有）
+
+```bash
+php artisan migrate
+# 若有 seeder
+php artisan db:seed --class=StudentSeeder
+```
+
+5. 啟動開發伺服器
+
+```bash
+php artisan serve
+# 打開 http://127.0.0.1:8000
+```
+
+---
+
+<a name="quick-troubleshoot"></a>
+
+## 快速疑難排解 (Quick Troubleshoot)
+
+常見問題與快速修復指令，方便開發時立即排查。
+
+-   表單提交出現 419 (Page Expired)
+    -   原因：缺少 CSRF token 或 session 問題。
+    -   快速修復：在 Blade 表單加入 `@csrf`，若仍有問題，清除快取並重啟伺服器：
+
+```bash
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+```
+
+-   `.env` 變更沒生效
+    -   原因：設定被快取。
+    -   修復：
+
+```bash
+php artisan config:clear
+php artisan cache:clear
+```
+
+-   Migration 無法執行（例如資料庫不存在）
+    -   確認 `.env` 中 DB\_\* 設定正確，並在資料庫中建立對應資料庫。
+    -   若要重置資料庫並重新跑 migration + seeder：
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+-   Mass Assignment 或 Model::create 失敗
+
+    -   檢查 Model 中的 `$fillable` 是否包含要寫入的欄位。
+
+-   N+1 查詢導致速度慢
+    -   使用 eager loading：
+
+```php
+$posts = Post::with('author')->get();
+```
+
+-   權限或檔案上傳失敗（storage 權限）
+    -   Windows: 確認 storage 與 bootstrap/cache 可寫入。
+    -   Linux: 設定權限例如 `chown -R www-data:www-data storage bootstrap/cache`（視環境而定）。
+
+---
+
+<a name="quick-reference"></a>
+
 ## 常用 Git 操作
 
 ### 從遠端拉取更新
@@ -505,6 +642,8 @@ git push origin main
 
 ---
 
+<a name="notes"></a>
+
 ## 注意事項
 
 -   **`.env` 檔案安全**: `.env` 檔案包含敏感資訊，務必確保已加入 `.gitignore`，避免將其推送到遠端倉庫。
@@ -512,3 +651,314 @@ git push origin main
 -   **應用程式金鑰**: `php artisan key:generate` 指令通常只在專案初始化時執行一次。
 -   **資料庫前置**: 在執行 `php artisan migrate` 之前，請務必確保資料庫已建立，否則遷移指令將會失敗。
 -   **前端資產**: 如果專案包含前端資產（如 CSS/JS），您可能需要運行 `npm install` 或 `yarn install`，然後運行 `npm run dev` 或 `npm run build` 來編譯它們。
+
+---
+
+## 速查卡（Quick Reference）
+
+最短、最常用單行命令速查：
+
+-   Clone + 依賴安裝：
+
+```bash
+git clone <repo> && cd <repo> && composer install && npm install    # (如需)
+```
+
+-   PHP 擴充（檢查確保已安裝）：
+
+```text
+pdo_mysql, pdo_sqlite, mbstring, openssl, tokenizer, xml, ctype, json, gd
+```
+
+-   複製 `.env`（平台變體）：
+
+```bash
+# mac / linux
+cp .env.example .env
+
+# PowerShell (Windows)
+Copy-Item .env.example .env
+
+# CMD
+copy .env.example .env
+```
+
+-   產生 APP_KEY：
+
+```bash
+php artisan key:generate
+```
+
+-   migrate / seed：
+
+```bash
+php artisan migrate && php artisan db:seed --class=StudentSeeder
+```
+
+-   啟動伺服器 / build：
+
+```bash
+php artisan serve && npm run dev
+```
+
+-   測試（unix / windows）：
+
+```bash
+# Unix / mac / linux
+vendor/bin/phpunit
+# Windows PowerShell
+.\\vendor\\bin\\phpunit
+```
+
+-   Git：
+
+```bash
+git add . && git commit -m "msg" && git push origin main
+```
+
+-   建立骨架檔：
+
+```bash
+php artisan make:controller StudentController --resource && php artisan make:model Student -m && php artisan make:seeder StudentSeeder
+```
+
+-   權限（Linux）：
+
+```bash
+sudo chown -R www-data:www-data storage bootstrap/cache && sudo chmod -R 775 storage bootstrap/cache
+```
+
+---
+
+<a name="system-requirements"></a>
+
+## 系統需求（建議）
+
+建議在本機或 CI 上滿足以下環境，以減少相依性問題：
+
+-   PHP >= 8.1
+-   Composer >= 2.0
+-   Node >= 16（參考專案的 `vite.config.js`）
+-   npm >= 8 或 yarn
+-   建議 PHP 擴充：pdo_mysql / pdo_sqlite, mbstring, openssl, tokenizer, xml, ctype, json, gd
+
+> 小提醒：若使用 SQLite 做測試或快速開發，請確認 PHP 已啟用 `pdo_sqlite`。
+
+---
+
+<a name="testing"></a>
+
+## 測試（phpunit / SQLite）
+
+想要在本機快速執行測試，可使用 SQLite 作為輕量測試資料庫。
+
+1. 建立 sqlite 檔案：
+
+```bash
+# 在專案根目錄建立檔案
+# mac / linux
+touch database/database.sqlite
+# PowerShell
+New-Item database\\database.sqlite -ItemType File
+```
+
+2. 在 `.env`（或 `.env.testing`）中設定：
+
+```dotenv
+DB_CONNECTION=sqlite
+DB_DATABASE=${PWD}/database/database.sqlite # 或絕對路徑
+```
+
+3. 執行 migration 與測試：
+
+```bash
+php artisan migrate
+# 建議（跨平台、Laravel 推薦）
+php artisan test
+# 直接使用 phpunit（若需要）
+# Unix / mac / linux
+vendor/bin/phpunit
+# Windows PowerShell 或 CMD
+vendor\bin\phpunit
+```
+
+> 提示：若你使用 GitHub Actions，通常會在 CI 上建立 sqlite 並直接執行 migration + phpunit。
+
+---
+
+## 前端資產（Vite / npm）
+
+本專案使用 Vite（參考 `vite.config.js`）來打包前端資產。常用命令：
+
+```bash
+# 開發（熱重載）
+npm run dev
+
+# 建置生產檔
+npm run build
+```
+
+常見問題：
+
+-   Node 版本過低會導致編譯失敗，請使用 Node 16+。
+-   若 CSS/JS 無更新，請確認瀏覽器沒有使用舊快取，或重新啟動 `npm run dev`。
+
+---
+
+## .env 常用變數說明（快速）
+
+-   APP_NAME: 應用名稱
+-   APP_ENV: local / production
+-   APP_DEBUG: true / false
+-   APP_URL: 應用的基礎 URL
+-   DB_CONNECTION, DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+-   MAIL_MAILER, MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD（如有寄信需求）
+
+開發建議：生產環境請務必將 `APP_DEBUG=false`，並把敏感值保存在安全的地方（不要提交到 Git）。
+
+---
+
+## 部署（生產）簡短 Checklist
+
+以下為生產環境上線前的常見步驟：
+
+```bash
+# 在生產機上
+composer install --no-dev --optimize-autoloader
+npm run build
+# 設定 env
+php artisan key:generate
+# 快取設定與路由
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+# 遷移資料庫
+php artisan migrate --force
+# 設定檔案權限（範例，視服務器 user/group 調整）
+sudo chown -R www-data:www-data storage bootstrap/cache
+sudo chmod -R 775 storage bootstrap/cache
+```
+
+備註：在生產上執行 `config:cache` 前，確認 `.env` 與 `config` 都是正確的；若需要回復設定，可以執行 `php artisan config:clear`。
+
+---
+
+## 常用路徑索引（快速參考）
+
+-   `routes/web.php` — Web 路由定義
+-   `app/Http/Controllers/` — Controllers
+-   `app/Models/` — Eloquent Models
+-   `resources/views/` — Blade templates
+-   `database/migrations/` — Migration 檔案
+-   `database/seeders/` — Seeder
+-   `storage/` — 可寫入檔案（logs、uploads、sessions）
+
+---
+
+## Route::resource 小技巧與範例
+
+使用 `route()` 輔助函式產生 URL：
+
+```blade
+<!-- 產生列表頁 URL -->
+<a href="{{ route('students.index') }}">學生列表</a>
+
+<!-- 產生編輯頁 URL -->
+<a href="{{ route('students.edit', ['student' => $id]) }}">編輯</a>
+```
+
+Controller redirect 範例：
+
+```php
+return redirect()->route('students.index')->with('success', '儲存成功');
+```
+
+---
+
+## 練習：建立學生 CRUD（Hands-on 練習）
+
+目的：透過一步步實作，讓你熟悉 Laravel 的 Model、Migration、Seeder、Controller、Route、Blade 與基本驗證流程。
+
+預計耗時：30–60 分鐘（視熟悉度而定）。
+
+### 目標（驗收標準）
+
+-   能在瀏覽器看到 `/students` 列表頁，顯示測試學生資料。
+-   能透過 `/students/create` 表單新增學生，並看到儲存後的導向與成功訊息。
+-   能使用 `students.edit` 進行編輯（可選）。
+
+### 步驟（依序執行）
+
+1. 建立 Model + Migration
+
+```bash
+php artisan make:model Student -m
+```
+
+編輯新 migration，加入 `name`, `email`, `age` 欄位（參考上方 migration 範例），然後執行：
+
+```bash
+php artisan migrate
+```
+
+2. 建立 Seeder 並填入測試資料
+
+```bash
+php artisan make:seeder StudentSeeder
+```
+
+在 `database/seeders/StudentSeeder.php` 加入幾筆 `Student::create(...)`，然後執行：
+
+```bash
+php artisan db:seed --class=StudentSeeder
+```
+
+3. 建立 Resource Controller
+
+```bash
+php artisan make:controller StudentController --resource
+```
+
+在 `index()` 使用 `Student::all()` 傳資料到 `student.index`，在 `create()` 回傳 `student.create`，在 `store()` 做驗證並 `Student::create($validated)`。
+
+4. 註冊資源路由
+
+在 `routes/web.php` 加入：
+
+```php
+Route::resource('students', App\Http\Controllers\StudentController::class);
+```
+
+5. 建立 Blade 視圖（簡化）
+
+-   `resources/views/student/index.blade.php`：顯示一個表格，使用 `@foreach ($data as $s)` 列出 `name, email, age`。並加上 "新增學生" 連結到 `route('students.create')`。
+-   `resources/views/student/create.blade.php`：使用上面的表單範例，包含 `@csrf` 與錯誤顯示。
+
+6. 瀏覽並驗證
+
+```bash
+php artisan serve
+# 開啟 http://127.0.0.1:8000/students
+```
+
+執行 `Create` 表單，若成功會導回 `students.index` 並顯示成功 flash 訊息。
+
+### PowerShell / Windows 小提示
+
+-   如果要複製 env 檔：`Copy-Item .env.example .env`
+-   若要在 PowerShell 執行 phpunit：`vendor\bin\phpunit`
+
+### 進階題（Bonus）
+
+-   加入欄位驗證規則，例如 email 必須唯一。
+-   實作 `edit` 與 `update`，並加入刪除功能 `destroy`。
+-   實作分頁：在 `index()` 用 `Student::paginate(10)`，並在 Blade 加上 `{{ $data->links() }}`。
+-   為 `Student` 建立工廠（Factory）並使用 `DatabaseSeeder` 產生大量假資料。
+
+### 如何檢查自己做得對
+
+-   `php artisan migrate:status` 可確認 migration 是否已跑。
+-   進到 `/students`，看到 seed 的資料即代表 `index()` 正確回傳資料。
+-   新增一筆後資料庫有新增紀錄且畫面導回，表示 `store()` 正常。
+
+---

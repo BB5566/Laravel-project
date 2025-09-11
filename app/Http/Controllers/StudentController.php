@@ -138,4 +138,16 @@ class StudentController extends Controller
         // dd('students child ok');
         return view('student.child');
     }
+
+    public function html()
+    {
+        // dd('students child ok');
+        return view('page.html');
+    }
+
+    public function js()
+    {
+        // dd('students child ok');
+        return view('page.js');
+    }
 }
