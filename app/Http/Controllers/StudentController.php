@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -11,38 +12,40 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $data = [
-            [
-                'id' => 1,
-                'name' => 'John Doe',
-                'age' => 25,
-                'email' => 'john@example.com',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Jane Smith',
-                'age' => 22,
-                'email' => 'jane@example.com',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Alice Lee',
-                'age' => 24,
-                'email' => 'alice@example.com',
-            ],
-            [
-                'id' => 4,
-                'name' => 'Bob Chen',
-                'age' => 23,
-                'email' => 'bob@example.com',
-            ],
-            [
-                'id' => 5,
-                'name' => 'Charlie Wang',
-                'age' => 26,
-                'email' => 'charlie@example.com',
-            ],
-        ];
+        // $data = [
+        //     [
+        //         'id' => 1,
+        //         'name' => 'John Doe',
+        //         'age' => 25,
+        //         'email' => 'john@example.com',
+        //     ],
+        //     [
+        //         'id' => 2,
+        //         'name' => 'Jane Smith',
+        //         'age' => 22,
+        //         'email' => 'jane@example.com',
+        //     ],
+        //     [
+        //         'id' => 3,
+        //         'name' => 'Alice Lee',
+        //         'age' => 24,
+        //         'email' => 'alice@example.com',
+        //     ],
+        //     [
+        //         'id' => 4,
+        //         'name' => 'Bob Chen',
+        //         'age' => 23,
+        //         'email' => 'bob@example.com',
+        //     ],
+        //     [
+        //         'id' => 5,
+        //         'name' => 'Charlie Wang',
+        //         'age' => 26,
+        //         'email' => 'charlie@example.com',
+        //     ],
+        // ];
+        $data = DB::select('select * from students');
+        // dd($data);
         return view('student.index', ['data' => $data]);
     }
 
