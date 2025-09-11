@@ -1,11 +1,11 @@
-@extends('layouts.front')
+@extends('layouts.end')
 
-@section('title', 'js')
+@section('title', 'php')
 
 
 @section('content')
     <div class="container mt-3">
-        <h2>JS Table</h2>
+        <h2>PHP Table</h2>
         <p>The .table-bordered class adds borders on all sides of the table and the cells:</p>
         <table class="table table-bordered">
             <thead>
