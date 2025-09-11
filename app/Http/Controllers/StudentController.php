@@ -44,8 +44,16 @@ class StudentController extends Controller
         //         'email' => 'charlie@example.com',
         //     ],
         // ];
-        $data = DB::select('select * from students');
-        // dd($data);
+        // $data = DB::select('select * from stu；dents');
+        // get()  feachAll 多筆 array foreach
+        // first() feach 單筆
+        $data = DB::table('students')->where('id', 1)->get();
+        $data = DB::table('students')->get();
+        dd($data);
+
+        // $data->id
+        // $data['id']
+        // $data.id
         return view('student.index', ['data' => $data]);
     }
 
