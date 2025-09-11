@@ -132,4 +132,10 @@ class StudentController extends Controller
         ];
         return view('student.test', ['data' => $data]);
     }
+
+    public function child()
+    {
+        // dd('students child ok');
+        return view('student.child');
+    }
 }
