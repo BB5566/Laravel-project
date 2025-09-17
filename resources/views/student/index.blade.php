@@ -12,6 +12,7 @@
 <body>
     <div class="container mt-3">
         <h2>Student</h2>
+        <a class="btn btn-primary" href="{{ route('students.create') }}">Add</a>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -28,8 +29,9 @@
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->created_at }}</td>
                         <td>
-                            <a class="btn btn-warning">edit</a>
-                            <a class="btn btn-danger">delete</a>
+                            <a class="btn btn-warning"
+                                href="{{ route('students.edit', ['student' => $student->id]) }}">edit</a> <a
+                                class="btn btn-danger" href="{{ route('students.destroy', $student->id) }}">delete</a>
                         </td>
                     </tr>
                 @endforeach
