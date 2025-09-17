@@ -173,4 +173,11 @@ class StudentController extends Controller
         // dd('students child ok');
         return view('page.python');
     }
+
+
+
+    public function list()
+    {
+        return view('student.list');
+    }
 }

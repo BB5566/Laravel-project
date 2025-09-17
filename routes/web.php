@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 
-
+Route::get('/student/list', [StudentController::class, 'list']); // Blade 範例頁面
 
 // students
 Route::get('/pages_html', [StudentController::class, 'html'])->name('pages.html');
