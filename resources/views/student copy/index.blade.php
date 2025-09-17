@@ -10,27 +10,30 @@
 </head>
 
 <body>
-    <div class="container mt-3">
-        <h2>Student</h2>
-        <table class="table table-hover">
-            <thead>
+    <div class="container mt-5">
+        <h1 class="mb-4">Student index</h1>
+        <div class="mb-3 text-end">
+            <a href="{{ route('students.excel') }}" class="btn btn-primary">output excel</a>
+            <a href="{{ route('students.create') }}" class="btn btn-primary">Add Student</a>
+        </div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Created_at</th>
-                    <th>Action</th>
+                    <th>NAME</th>
+                    <th>Email</th>
+                    <th>edit</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $student)
+                @foreach ($data as $value)
                     <tr>
-                        <td>{{ $student->id }}</td>
-                        <td>{{ $student->name }}</td>
-                        <td>{{ $student->created_at }}</td>
-                        <td>
-                            <a class="btn btn-warning">edit</a>
-                            <a class="btn btn-danger">delete</a>
-                        </td>
+                        <td>{{ $value->id }}</td>
+                        <td>{{ $value->name }}</td>
+                        <td>{{ $value->email }}</td>
+
+                        <td> <a class="btn btn-warning"
+                                href="{{ route('students.edit', ['student' => $value->id]) }}">edit</a></td>
                     </tr>
                 @endforeach
             </tbody>
