@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use App\Models\Phone;
-
+use App\Models\Hobby;
 
 
 class StudentController extends Controller
@@ -16,8 +16,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $data = Student::all();
-        // dd($data);
+        // $data = Student::all();
         $data = Student::with('phoneRelation', 'hobbiesRelation')->get();
         // $studentHobbies = $data[0]->hobbiesRelation;
         // dd($studentHobbies);
@@ -66,7 +65,9 @@ class StudentController extends Controller
      */
     public function create()
     {
+        // dd('hello students create');
         return view('student.create');
+        //
     }
 
     /**
@@ -74,37 +75,47 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        // $input = $request->all();
 
-        // 取得除了 CSRF 欄位 (_token) 以外的所有輸入資料
-        // 這樣可以避免直接使用 $request->all() 帶入 _token
-        // 造成不必要的資料注入到模型或資料庫
+        //   array:3 [▼ // app\Http\Controllers\StudentController.php:87
+        //   "name" => "amy"
+        //   "phone" => "123"
+        //   "hobbies" => "PHP,PYTHON"
+        // ]
+
         $input = $request->except('_token');
 
-        // 如果需要除錯，可以解除下面註解來檢視輸入內容
         // dd($input);
+        // ps. 主表存檔 才會有id
 
-        // 建立一個新的 Student 模型實例，準備填入欄位並儲存
+
+        // 主表
         $data = new Student;
-
-        // 將輸入的 name 欄位指定給模型的 name 屬性
-        // 假設前端表單有 <input name="name">，這裡會取出該值
         $data->name = $input['name'];
-
-
-        // 呼叫 save() 將模型資料寫入資料庫（INSERT）
-        // 如果模型有設定 timestamps，會自動填入 created_at/updated_at
         $data->save();
 
 
-        // 儲存電話號碼
-        // 子表 也要存檔
-        // 子表
+        // phone子表 也要存檔
+        // phone子表
         $dataPhone = new Phone;
         $dataPhone->student_id = $data->id;
         $dataPhone->phone = $input['phone'];
         $dataPhone->save();
-        // 儲存完成後導回學生列表頁面
 
+        // 新增hobby子表
+        // "hobbies" => "PHP,JS"
+        // string to array
+        $hobbyArray = explode(',', $input['hobbies']);
+        // dd($hobbyArray);
+
+        foreach ($hobbyArray as $key => $value) {
+            $dataHobby = new Hobby;
+            $dataHobby->student_id = $data->id;
+            $dataHobby->hobby = $value;
+            $dataHobby->save();
+        }
+
+        // return redirect('/students');
         return redirect()->route('students.index');
     }
 
@@ -121,9 +132,27 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Student::with('phoneRelation')->find($id);
+        // dd("students id = $id edit ok");
+        // $data = [
+        //     'id' => $id
+        // ];
+        $data = Student::with('phoneRelation', 'hobbiesRelation')->find($id);
         // dd($data);
 
+        $dataHobbies = $data->hobbiesRelation;
+
+        // $hobbyString = '';
+        $hobbyArray = [];
+        foreach ($dataHobbies as $keyHobby => $valueHobby) {
+            array_push($hobbyArray, $valueHobby->hobby);
+        };
+
+        $hobbyString = join(',', $hobbyArray);
+        //  dd($hobbyString);
+        $data['hobbyString'] = $hobbyString;
+        // dd($data[$key']
+
+        // dd($data);
         return view('student.edit', ['data' => $data]);
     }
 
@@ -132,26 +161,50 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         // dd('update ok');
         // dd($data);
 
+        // array:3 [▼ // app\Http\Controllers\StudentController.php:158
+        //   "name" => "amy"
+        //   "phone" => "0911"
+        //   "hobbies" => "PHP,JS"
+        // ]
+
         // form input
         $input = $request->except('_token', '_method');
+        // dd($input);
+
+
 
         // 抓主表資料
         $data = Student::find($id);
         $data->name = $input['name'];
         $data->save();
 
-        // 刪除子表
+        // 刪除phone子表
         Phone::where('student_id', $id)->delete();
 
-        // 新增子表
+        // 新增phone子表
         $dataPhone = new Phone;
         $dataPhone->student_id = $data->id;
         $dataPhone->phone = $input['phone'];
         $dataPhone->save();
+
+        // 刪除hobby子表
+        Hobby::where('student_id', $id)->delete();
+
+        // 新增hobby子表
+        // "hobbies" => "PHP,JS"
+        // string to array
+        $hobbyArray = explode(',', $input['hobbies']);
+        // dd($hobbyArray);
+
+        foreach ($hobbyArray as $key => $value) {
+            $dataHobby = new Hobby;
+            $dataHobby->student_id = $data->id;
+            $dataHobby->hobby = $value;
+            $dataHobby->save();
+        }
 
         return redirect()->route('students.index');
     }
@@ -161,9 +214,14 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        // dd("destroy ok");
-        $data = Student::find($id);
-        $data->delete();
+        // dd("students destroy ok $id");
+
+        // 先刪除子表
+        Phone::where('student_id', $id)->delete();
+        Hobby::where('student_id', $id)->delete();
+        Student::where('id', $id)->delete();
+        // $data = Student::find($id);
+        // $data->delete();
         return redirect()->route('students.index');
     }
 
@@ -175,32 +233,23 @@ class StudentController extends Controller
 
     public function test()
     {
+        // dd('students excel ok');
+
+        $data = 'test ok';
+
         $data = [
             [
-                'name' => 'John Doe',
-                'age' => 25,
-                'email' => 'john@example.com',
+                'id' => 1,
+                'name' => 'amy',
             ],
             [
-                'name' => 'Jane Smith',
-                'age' => 22,
-                'email' => 'jane@example.com',
+                'id' => 2,
+                'name' => 'bob',
             ],
             [
-                'name' => 'Alice Lee',
-                'age' => 24,
-                'email' => 'alice@example.com',
-            ],
-            [
-                'name' => 'Bob Chen',
-                'age' => 23,
-                'email' => 'bob@example.com',
-            ],
-            [
-                'name' => 'Charlie Wang',
-                'age' => 26,
-                'email' => 'charlie@example.com',
-            ],
+                'id' => 3,
+                'name' => 'cat',
+            ]
         ];
         return view('student.test', ['data' => $data]);
     }
@@ -233,12 +282,5 @@ class StudentController extends Controller
     {
         // dd('students child ok');
         return view('page.python');
-    }
-
-
-
-    public function list()
-    {
-        return view('student.list');
     }
 }
