@@ -19,6 +19,10 @@
                 <label for="name">Name:</label>
                 <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
             </div>
+            <div class="mb-3 mt-3">
+                <label for="phone">Phone:</label>
+                <input type="name" class="form-control" id="phone" placeholder="Enter phone" name="phone">
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

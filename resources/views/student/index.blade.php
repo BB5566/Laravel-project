@@ -18,6 +18,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Phone</th>
                     <th>Created_at</th>
                     <th>Action</th>
                 </tr>
@@ -27,6 +28,7 @@
                     <tr>
                         <td>{{ $student->id }}</td>
                         <td>{{ $student->name }}</td>
+                        <td>{{ $student->phoneRelation->phone ?? '' }}</td>
                         <td>{{ $student->created_at }}</td>
                         <td>
                             <a class="btn btn-warning"

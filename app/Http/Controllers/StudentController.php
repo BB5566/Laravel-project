@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
+use App\Models\Phone;
+
 
 
 class StudentController extends Controller
@@ -16,6 +18,8 @@ class StudentController extends Controller
     {
         $data = Student::all();
         // dd($data);
+        $data = Student::with('phoneRelation')->get();
+
         return view('student.index', ['data' => $data]);
     }
 
@@ -48,10 +52,19 @@ class StudentController extends Controller
         // 假設前端表單有 <input name="name">，這裡會取出該值
         $data->name = $input['name'];
 
+
         // 呼叫 save() 將模型資料寫入資料庫（INSERT）
         // 如果模型有設定 timestamps，會自動填入 created_at/updated_at
         $data->save();
 
+
+        // 儲存電話號碼
+        // 子表 也要存檔
+        // 子表
+        $dataPhone = new Phone;
+        $dataPhone->student_id = $data->id;
+        $dataPhone->phone = $input['phone'];
+        $dataPhone->save();
         // 儲存完成後導回學生列表頁面
 
         return redirect()->route('students.index');
@@ -70,7 +83,7 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Student::find($id);
+        $data = Student::with('phoneRelation')->find($id);
         // dd($data);
 
         return view('student.edit', ['data' => $data]);
@@ -86,12 +99,21 @@ class StudentController extends Controller
         // dd($data);
 
         // form input
-        $input = $request->except('_token');
+        $input = $request->except('_token', '_method');
 
-        // 抓id 單筆資料
+        // 抓主表資料
         $data = Student::find($id);
         $data->name = $input['name'];
         $data->save();
+
+        // 刪除子表
+        Phone::where('student_id', $id)->delete();
+
+        // 新增子表
+        $dataPhone = new Phone;
+        $dataPhone->student_id = $data->id;
+        $dataPhone->phone = $input['phone'];
+        $dataPhone->save();
 
         return redirect()->route('students.index');
     }
