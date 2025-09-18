@@ -53,8 +53,8 @@ class StudentController extends Controller
         $data->save();
 
         // 儲存完成後導回學生列表頁面
-        // 這裡使用硬編碼路徑 '/students'，也可以改為 route() 幫助函式
-        return redirect('/students');
+
+        return redirect()->route('students.index');
     }
 
     /**
@@ -70,10 +70,10 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        // dd("student edit " . $id);
         $data = Student::find($id);
+        // dd($data);
 
-        return view('student.edit', ['id' => $id]);
+        return view('student.edit', ['data' => $data]);
     }
 
     /**

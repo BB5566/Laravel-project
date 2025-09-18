@@ -30,8 +30,8 @@
                         <td>{{ $student->created_at }}</td>
                         <td>
                             <a class="btn btn-warning"
-                                href="{{ route('students.edit', ['student' => $student->id]) }}">edit</a> <a
-                                class="btn btn-danger" href="{{ route('students.destroy', $student->id) }}">delete</a>
+                                href="{{ route('students.edit', ['student' => $student->id]) }}">edit</a>
+                            <a class="btn btn-danger" href="{{ route('students.destroy', $student->id) }}">delete</a>
                         </td>
                     </tr>
                 @endforeach
