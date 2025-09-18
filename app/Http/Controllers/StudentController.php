@@ -18,8 +18,46 @@ class StudentController extends Controller
     {
         $data = Student::all();
         // dd($data);
-        $data = Student::with('phoneRelation')->get();
+        $data = Student::with('phoneRelation', 'hobbiesRelation')->get();
+        // $studentHobbies = $data[0]->hobbiesRelation;
+        // dd($studentHobbies);
+        // dd($data);
 
+        // $data = [
+        //     [
+        //         'id' => 1,
+        //         'name' => 'amy',
+        //         'phone' => '09123',
+        //         'hobbies' => ['php','python'],
+        //         'hobbyString' => 'PHP, Python'
+        //     ],
+        //     [
+        //         'id' => 2,
+        //         'name' => 'bob',
+        //         'phone' => '0922',
+        //         'hobbies' => []
+        //     ]
+        // ];
+
+        // 我在前端foreach many
+        // 我在後端foreach many
+
+        foreach ($data as $key => $value) {
+            $dataHobbies = $value->hobbiesRelation;
+
+            // $hobbyString = '';
+            $hobbyArray = [];
+            foreach ($dataHobbies as $keyHobby => $valueHobby) {
+                array_push($hobbyArray, $valueHobby->hobby);
+            };
+
+            $hobbyString = join(',', $hobbyArray);
+            //  dd($hobbyString);
+            $data[$key]['hobbyString'] = $hobbyString;
+            // dd($data[$key']
+        }
+
+        // dd($data);
         return view('student.index', ['data' => $data]);
     }
 
